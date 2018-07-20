@@ -1,5 +1,5 @@
 function [r,c] = nonZeroIndex(image)
-
+% this file indicate first nonzero pixels locations
              r=0; c=0;
             [Row, Col]= size(image);
 
