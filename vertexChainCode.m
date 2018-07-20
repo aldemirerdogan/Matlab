@@ -1,3 +1,6 @@
+% Vertex code for 2D images
+% load imageTest
+
 [r,c] = nonZeroIndex(imageTest);
 contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise');
 
