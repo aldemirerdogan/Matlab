@@ -1,7 +1,9 @@
 % Vertex code for 2D images
 % load imageTest
 
+% Index of the first noZero pixel
 [r,c] = nonZeroIndex(imageTest);
+% 4 connectivity index of the contour
 contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise');
 
 imageF4Buffer = zeros(7,7);
