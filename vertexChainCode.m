@@ -32,12 +32,39 @@ for indexX = 1:2
         moveDictionary = [0 1;-1 1;-1 0;-1 -1;0 -1;1 -1;1 0;1 1];
         
         if ( abs(moveDirection2(1,1))== 2 || abs(moveDirection2(1,2)) == 2 )
-            bla bla
-            
+           % the case of next pixel are not in the zone of the eight
+           % connectivity
+           if (moveDirection1 == moveDictionary(1,:))  
+                vertex  = cat(2,vertex, vertexDictionary(2));
+           elseif (moveDirection1 == moveDictionary(2,:)) 
+                vertex  = cat(2,vertex, [vertexDictionary(1) vertexDictionary(3)] );
+           elseif (moveDirection1 == moveDictionary(3,:))
+                vertex  = cat(2,vertex, [vertexDictionary(1) vertexDictionary(2)] );
+           elseif (moveDirection1 == moveDictionary(4,:)) 
+                vertex  = cat(2,vertex, [vertexDictionary(1) vertexDictionary(1) ...
+                                         vertexDictionary(3)] );
+           elseif (moveDirection1 == moveDictionary(5,:)) 
+                vertex  = cat(2,vertex, [vertexDictionary(1) vertexDictionary(2)] );
+           elseif (moveDirection1 == moveDictionary(5,:))
+                vertex  = cat(2,vertex, [vertexDictionary(1) vertexDictionary(1)...
+                                         vertexDictionary(3)]);
+           elseif (moveDirection1 == moveDictionary(6,:))
+                vertex  = cat(2,vertex, [vertexDictionary(2) vertexDictionary(1) ...
+                                         vertexDictionary(1) vertexDictionary(2)]);
+           elseif (moveDirection1 == moveDictionary(7,:)) 
+                vertex  = cat(2,vertex, [vertexDictionary(3)] );
+           end
         else 
-            
-           bla bla
+          bla bla
         end
+        
+        
+        
+        
+        
+        
+        
+        
         
         if (moveDirection1 == moveDictionary(1,:))
             vertex  = cat(2,vertex, vertexDictionary(2));
