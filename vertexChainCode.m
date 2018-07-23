@@ -8,20 +8,17 @@ imshow(imageTest);
 
 % Index of the first noZero pixel
 [r,c] = nonZeroIndex(imageTest);
-% 4 connectivity index of the contour
-contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise');
+contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise'); % 4 connectivity index of the contour
 
 imageF4Contour = zeros(size(imageTest,1),size(imageTest,2));
 sizeContourF4 = size(contourF4,1);
 
+% reconstruct the image in contourized form
 for index=1:sizeContourF4
-    x = contourF4(index,1);
-    y = contourF4(index,2);
-    imageF4Contour(x,y)=1;
+    imageF4Contour(contourF4(index,1),contourF4(index,2))=1;
 end
 
-hold on;
-plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
+hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 
 
 vertex = 1;
@@ -33,7 +30,7 @@ for indexX = 1:2
         contourIndexNext1 = contourF4(indexY+1,:);
         contourIndexNext2 = contourF4(indexY+2,:);
         
-        moveDirection1 = contourIndexNext1-contourIndex;
+        moveDirection1 = contourIndexNext1 - contourIndex;
         moveDirection2 = contourIndexNext2 - contourIndex;
         
         vertex = 1;
