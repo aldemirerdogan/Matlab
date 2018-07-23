@@ -1,5 +1,10 @@
 % Vertex code for 2D images
 % load imageTest
+% x --> {x, x+1, x-1} --> {x, x+1, x-1, x-2, x+2 }
+% x --> {y, y+1, y-1} --> {y, y+1, y-1, y-2, y+2 }
+
+
+
 
 imageTest = imread('test2_36x36.png');
 imageTest = imageTest (:,:,1);
