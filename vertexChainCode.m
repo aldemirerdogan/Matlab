@@ -1,19 +1,28 @@
 % Vertex code for 2D images
 % load imageTest
 
+imageTest = imread('test2_36x36.png');
+imageTest = imageTest (:,:,1);
+imageTest = logical(imageTest);
+imshow(imageTest);
+
 % Index of the first noZero pixel
 [r,c] = nonZeroIndex(imageTest);
 % 4 connectivity index of the contour
 contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise');
 
-imageF4Buffer = zeros(7,7);
+imageF4Contour = zeros(size(imageTest,1),size(imageTest,2));
 sizeContourF4 = size(contourF4,1);
 
 for index=1:sizeContourF4
     x = contourF4(index,1);
     y = contourF4(index,2);
-    imageF4Buffer(x,y)=1;
+    imageF4Contour(x,y)=1;
 end
+
+hold on;
+plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
+
 
 vertex = 1;
 
