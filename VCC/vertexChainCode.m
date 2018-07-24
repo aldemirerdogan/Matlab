@@ -1,11 +1,9 @@
-% Vertex code for 2D images
+%% Vertex code for 2D images
 % load imageTest
 % x --> {x, x+1, x-1} --> {x, x+1, x-1, x-2, x+2 }
 % x --> {y, y+1, y-1} --> {y, y+1, y-1, y-2, y+2 }
-
-
-
-
+% add some descriptons
+%%
 imageTest = imread('test_10x10.png');
 imageTest = imageTest (:,:,1);
 imageTest = logical(imageTest);
