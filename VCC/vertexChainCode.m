@@ -3,6 +3,8 @@
 % x --> {x, x+1, x-1} --> {x, x+1, x-1, x-2, x+2 }
 % x --> {y, y+1, y-1} --> {y, y+1, y-1, y-2, y+2 }
 % add some descriptons
+% there is a algebraic relationship between the vertex number and scanning
+% path through the contour of the shape
 %%
 imageTest = imread('test_10x10.png');
 imageTest = imageTest (:,:,1);
