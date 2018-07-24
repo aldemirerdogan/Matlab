@@ -6,7 +6,7 @@
 
 
 
-imageTest = imread('test2_36x36.png');
+imageTest = imread('test_10x10.png');
 imageTest = imageTest (:,:,1);
 imageTest = logical(imageTest);
 imshow(imageTest);
