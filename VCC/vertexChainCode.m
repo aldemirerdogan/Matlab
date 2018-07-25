@@ -29,7 +29,6 @@ hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 vertex = 1;
 
 for indexX = 1:2
-    for indexY = 1:2
         
         contourIndex = contourF4(indexY,:) ;
         contourIndexNext1 = contourF4(indexY+1,:);
@@ -104,5 +103,5 @@ for indexX = 1:2
         end
 
     moveDirection2 = contourIndexMoveDepth2-contourF4(indexY+1,:); 
-    end
+
 end
