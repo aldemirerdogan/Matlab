@@ -1,6 +1,7 @@
 function [r,c] = nonZeroIndex(image)
 %% this file indicate first nonzero pixels locations
-    % convert to logical form
+    % convert to logical form 
+    % new brach 
     image = logical (image);
 
      r=0; c=0;  % initialize variables
