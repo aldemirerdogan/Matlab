@@ -29,6 +29,14 @@ hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 vertex = 1;
 directionFlag = [ 0;0;0;0 ];
 
+differentialVector = zeros(size(contourF4,1)-1,2);
+for indexDiff = 1:size(contourF4,1)
+    differentialVector(indexDiff,:) = contourF4(indexDiff,:)-contourF4(indexDiff+1,:);
+    if (indexDiff==size(contourF4,1)-1)
+        break;
+    end
+end
+
 for indexX = 1:2
         
         contourIndex = contourF4(indexY,:) ;
