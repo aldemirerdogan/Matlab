@@ -2,7 +2,6 @@
 % load imageTest
 % x --> {x, x+1, x-1} --> {x, x+1, x-1, x-2, x+2 }
 % x --> {y, y+1, y-1} --> {y, y+1, y-1, y-2, y+2 }
-
 % there is a algebraic relationship between the vertex number and scanning
 % path through the contour of the shape
 %%
@@ -29,14 +28,23 @@ hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 vertex = 1;
 directionFlag = [ 0;0;0;0 ];
 
+% find one-pixel depth differential vector of the contours
 differentialVector = zeros(size(contourF4,1)-1,2);
 for indexDiff = 1:size(contourF4,1)
-    differentialVector(indexDiff,:) = contourF4(indexDiff,:)-contourF4(indexDiff+1,:);
+differentialVector(indexDiff,:) = contourF4(indexDiff+1,:)-contourF4(indexDiff,:);
     if (indexDiff==size(contourF4,1)-1)
         break;
     end
 end
 
+for indexDiffScanRow = 1:size(differentialVector,1)
+    for indexDiffScanCol = 1:size(differentialVector,2)
+        DifferetialVector2nd = differentialVector(indexDiffScanRow+1,:) - differentialVector(indexDiffScanRow,:);
+    end
+end
+
+
+%%
 for indexX = 1:2
         
         contourIndex = contourF4(indexY,:) ;
