@@ -5,11 +5,11 @@
 % there is a algebraic relationship between the vertex number and scanning
 % path through the contour of the shape
 %%
-imageTest = imread('test_10x10.png');
+imageTest = imread('rectangular_36x36.png');
 imageTest = imageTest (:,:,1);
 imageTest = logical(imageTest);
 imshow(imageTest);
-
+%%
 % Index of the first noZero pixel
 [r,c] = nonZeroIndex(imageTest);
 contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise'); % 4 connectivity index of the contour
@@ -29,17 +29,24 @@ vertex = 1;
 directionFlag = [ 0;0;0;0 ];
 
 % find one-pixel depth differential vector of the contours
-differentialVector = zeros(size(contourF4,1)-1,2);
+differentialVector = zeros(size(contourF4,1),2);
+differential2ndVector = zeros(size(contourF4,1),2);
+
 for indexDiff = 1:size(contourF4,1)
-differentialVector(indexDiff,:) = contourF4(indexDiff+1,:)-contourF4(indexDiff,:);
-    if (indexDiff==size(contourF4,1)-1)
+    differentialVector(indexDiff,:) = contourF4(indexDiff,:) - ...
+                                      contourF4(indexDiff+1,:);
+    if (indexDiff == size(contourF4,1)-1)
+        differentialVector(indexDiff+1,:) = contourF4(end,:) - ...
+                                      contourF4(1,:);
         break;
     end
 end
 
-for indexDiffScanRow = 1:size(differentialVector,1)
-    for indexDiffScanCol = 1:size(differentialVector,2)
-        DifferetialVector2nd = differentialVector(indexDiffScanRow+1,:) - differentialVector(indexDiffScanRow,:);
+for index2ndDiff = 1:size(differentialVector,1)
+    differential2ndVector(index2ndDiff,:) = differentialVector(index2ndDiff+1,:)- ...
+                                            differentialVector(index2ndDiff,:);
+    if (index2ndDiff==size(contourF4,1)-1)
+        break;
     end
 end
 
