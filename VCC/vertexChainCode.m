@@ -31,10 +31,11 @@ directionFlag = [ 0;0;0;0 ];
 % find one-pixel depth differential vector of the contours
 differentialVector = zeros(size(contourF4,1),2);
 differential2ndVector = zeros(size(contourF4,1),2);
+differential3thVector = zeros(size(contourF4,1),2);
 
 for indexDiff = 1:size(contourF4,1)
-    differentialVector(indexDiff,:) = contourF4(indexDiff,:) - ...
-                                      contourF4(indexDiff+1,:);
+    differentialVector(indexDiff,:) = contourF4(indexDiff+1,:) - ...
+                                      contourF4(indexDiff,:);
     if (indexDiff == size(contourF4,1)-1)
         differentialVector(indexDiff+1,:) = contourF4(end,:) - ...
                                       contourF4(1,:);
@@ -50,7 +51,13 @@ for index2ndDiff = 1:size(differentialVector,1)
     end
 end
 
-
+for index3thDiff = 1:size(differential2ndVector,1)
+    differential3thVector(index3thDiff,:) = differential2ndVector(index3thDiff+1,:)- ...
+                                            differential2ndVector(index3thDiff,:);
+    if (index3thDiff==size(contourF4,1)-1)
+        break;
+    end
+end
 %%
 for indexX = 1:2
         
