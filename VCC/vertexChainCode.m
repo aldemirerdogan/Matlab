@@ -9,7 +9,7 @@ imageTest = imread('rectangular_36x36.png');
 imageTest = imageTest (:,:,1);
 imageTest = logical(imageTest);
 imshow(imageTest);
-%% Think on neighbor relationship
+%% 
 % Index of the first noZero pixel
 [r,c] = nonZeroIndex(imageTest);
 contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise'); % 4 connectivity index of the contour
@@ -24,9 +24,10 @@ end
 
 hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 
-
+%%
+vertexVector = zeros(size(contourF4,1)+3,1);
 vertex = 1;
-directionFlag = [ 0;0;0;0 ];
+directionFlag = [0;0;0;0];
 
 % find one-pixel depth differential vector of the contours
 differentialVector = zeros(size(contourF4,1),2);
@@ -59,6 +60,8 @@ for index3thDiff = 1:size(differential2ndVector,1)
     end
 end
 %%
+% initialiaze vertex vector
+
 for indexX = 1:2
         
         contourIndex = contourF4(indexY,:) ;
