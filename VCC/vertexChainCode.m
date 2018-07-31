@@ -28,29 +28,43 @@ end
 
 hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 
-%%
+%% new approach
+
 vertexVector = zeros(size(contourF4,1)+3,1);
 vertex = 1;
 directionFlag = [0;0;0;0];
+
+vertexVector(1) = 1;
+flag = 1;
+traceScalar = 2;
+neighbourDepth = 3;
+scanningWindow = ones(3,3);
+imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both');
+
+
+for indexTrace =1:size(contourF4,1)
+    contourIndex = contourF4(indexTrace,1);
+    
+    for indexTruncate = 1:neighbourDepth
+        truncatedRegion = imageF4ContourPadded(contourIndex(1,1)+indexTruncate-1,...
+                                               contourIndex(1,2):contourIndex(1,2)+indexTruncate-1);
+    end
+    for indexNeigbour = 1:neigbourDepth
+        imageF4Contour(contourF4(indexTrace+index-1,1),contourF4(indexTrace+index-1,2))= traceScalar;
+    end
+    flag =flag+1;
+
+end
+
+
+%% Differential vector generation
 
 % find one-pixel depth differential vector of the contours
 differentialVector = zeros(size(contourF4,1),2);
 differential2ndVector = zeros(size(contourF4,1),2);
 differential3thVector = zeros(size(contourF4,1),2);
 
-vertexVector(1) = 1;
-flag = 1;
 
-
-for indexTrace =1:size(contourF4,1)
-    contourIndex = contourF4(indexTrace,:);
-    imageF4Contour()=2;
-    flag =flag+1;
-
-end
-
-
-%%
 for indexDiff = 1:size(contourF4,1)
     differentialVector(indexDiff,:) = contourF4(indexDiff+1,:) - ...
                                       contourF4(indexDiff,:);
