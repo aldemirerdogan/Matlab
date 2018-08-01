@@ -38,18 +38,30 @@ neighbourDepth = 3;
 scanningWindow = ones(neighbourDepth,neighbourDepth);
 imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both'); % one pixel padding
 vertexVector = zeros(size(contourF4,1)+neighbourDepth ,1);
-VertexDictionary = [];
+vertexDictionary = zeros(3,3,5);
+
+% Define vertex dictionary elements
+vertexDictionary(:,:,1) = [1 0 0; 1 0 0; 1 0 0]; vertexDictionary(:,:,2) = [0 1 0; 1 1 0; 0 0 0];
+vertexDictionary(:,:,3) = [1 0 0; 1 1 0; 0 0 0]; vertexDictionary(:,:,4) = [1 1 0; 0 1 0; 0 0 0];
+vertexDictionary(:,:,5) = [1 1 1; 0 0 0; 0 0 0];
 
 for indexTrace =1:size(contourF4,1)
     contourIndex = contourF4(indexTrace:indexTrace+2,:);
     matrixBuffer = zeros(neighbourDepth,neighbourDepth);
-    normalizedTruncatedWindow = contourIndex - (min(contourIndex)-1);
+    normalizedTruncatedInd = contourIndex - (min(contourIndex)-1);
     
-    for index=1:size(normalizedTruncatedWindow,1)
-        matrixBuffer(normalizedTruncatedWindow(index,1),normalizedTruncatedWindow(index,2))=1;
+    for in=1:size(normalizedTruncatedInd,1)
+        matrixBuffer(normalizedTruncatedInd(in,1), normalizedTruncatedInd(in,2))=1;
     end
     
+    for indDictSearch = 1:size(vertexDictionary,3)
+        if(sum(sum(vertexDictionary(:,:,indDictSearch).*matrixBuffer)) == neighbourDepth );
+            dictFlag = indDictSearch;
+            break;
+        end
+    end
     
+    vertexDictSymbol = 
     
     truncatedRegionBuffer = imageF4ContourPadded(contourIndex(1,1):contourIndex(1,1)+indexTruncate,...
                                                  contourIndex(1,2):contourIndex(1,2)+indexTruncate);
