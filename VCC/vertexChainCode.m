@@ -32,6 +32,7 @@ hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 
 vertexVector = zeros(size(contourF4,1)+3,1);
 vertex = 1;
+
 directionFlag = [0;0;0;0];
 
 vertexVector(1) = 1;
