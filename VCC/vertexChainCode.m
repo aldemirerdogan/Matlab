@@ -28,28 +28,25 @@ end
 
 hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 
-%% new approach
-
-vertexVector = zeros(size(contourF4,1)+3,1);
-vertex = 1;
-
+%% new approach: 3x3 window swapping
+% initialization
 directionFlag = [0;0;0;0];
-
 vertexVector(1) = 1;
 flag = 1;
 traceScalar = 2;
 neighbourDepth = 3;
-scanningWindow = ones(3,3);
-imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both');
+scanningWindow = ones(neighbourDepth,neighbourDepth);
+imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both'); % one pixel padding
+vertexVector = zeros(size(contourF4,1)+neighbourDepth ,1);
+VertexDictionary = [];
 
 
 for indexTrace =1:size(contourF4,1)
     contourIndex = contourF4(indexTrace,1);
     
-    for indexTruncate = 1:neighbourDepth
-        truncatedRegion = imageF4ContourPadded(contourIndex(1,1)+indexTruncate-1,...
-                                               contourIndex(1,2):contourIndex(1,2)+indexTruncate-1);
-    end
+    truncatedRegionBuffer = imageF4ContourPadded(contourIndex(1,1):contourIndex(1,1)+indexTruncate,...
+                                                 contourIndex(1,2):contourIndex(1,2)+indexTruncate);
+ 
     for indexNeigbour = 1:neigbourDepth
         imageF4Contour(contourF4(indexTrace+index-1,1),contourF4(indexTrace+index-1,2))= traceScalar;
     end
