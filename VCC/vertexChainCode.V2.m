@@ -5,7 +5,7 @@
 % there is a algebraic relationship between the vertex number and scanning
 % path through the contour of the shape
 %% image acquisition
-
+% 4-pixel group and connect the next to previous one
 imageTest = imread('rectangular_36x36.png');
 imageTest = imageTest (:,:,1);
 imageTest = logical(imageTest);
