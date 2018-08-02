@@ -21,11 +21,11 @@ for indexTrace =1:2:size(contourF4,1)
     normalizedMatrixBuffer = zeros(neighbourDepth,neighbourDepth);
     normalizedTruncatedInd = contourIndex - (min(contourIndex)-1);
     % determine the direction of the truncated piece
-    %------------------------------------------------------------------------------------------
+    % ------------------------------------------------------------------------------------------
     %    |           | : (0,+2)   |               | :(+1,+1)             |      |: (+1,-1)
     %    |           |            |_ : (-1,-1)    |_           (-1,+1): _|     _|
     %    | :(0,-2)   |                                                                 
-    %------------------------------------------------------------------------------------------
+    % ------------------------------------------------------------------------------------------
     for in=1:size(normalizedTruncatedInd,1)
         normalizedMatrixBuffer(normalizedTruncatedInd(in,1), normalizedTruncatedInd(in,2))=1;
     end
