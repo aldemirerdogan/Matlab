@@ -4,6 +4,7 @@
 % x --> {y, y+1, y-1} --> {y, y+1, y-1, y-2, y+2 }
 % there is a algebraic relationship between the vertex number and scanning
 % path through the contour of the shape
+
 %% image acquisition
 % 4-pixel group and connect the next to previous one
 imageTest = imread('rectangular_36x36.png');
@@ -12,8 +13,6 @@ imageTest = logical(imageTest);
 imshow(imageTest);
 
 %% Contour extracting
-
-
 % Index of the first noZero pixel
 [r,c] = nonZeroIndex(imageTest);
 contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise'); % 4 connectivity index of the contour
