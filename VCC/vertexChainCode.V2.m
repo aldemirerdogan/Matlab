@@ -40,11 +40,13 @@ imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both'); % one pixel padd
 vertexVector = zeros(size(contourF4,1)+neighbourDepth ,1);
 vertexDictionary = zeros(3,3,5);
 
-% Define vertex dictionary elements
+
+
+
 vertexDictionary(:,:,1) = [1 0 0; 1 0 0; 1 0 0]; vertexDictionary(:,:,2) = [0 1 0; 1 1 0; 0 0 0];
 vertexDictionary(:,:,3) = [1 0 0; 1 1 0; 0 0 0]; vertexDictionary(:,:,4) = [1 1 0; 0 1 0; 0 0 0];
 vertexDictionary(:,:,5) = [1 1 1; 0 0 0; 0 0 0];
-
+Dhn
 for indexTrace =1:size(contourF4,1)
     contourIndex = contourF4(indexTrace:indexTrace+2,:);
     matrixBuffer = zeros(neighbourDepth,neighbourDepth);
