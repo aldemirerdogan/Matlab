@@ -7,7 +7,7 @@
 
 %% new approach: 3x3 window swapping
 % initialization
-directionFlag = [0;0;0;0];
+directionFlag = [0 0];
 flag = 1;
 traceScalar = 2;
 neighbourDepth = 3;
@@ -21,11 +21,15 @@ for indexTrace =1:2:size(contourF4,1)
     normalizedMatrixBuffer = zeros(neighbourDepth,neighbourDepth);
     normalizedTruncatedInd = contourIndex - (min(contourIndex)-1);
     % determine the direction of the truncated piece
-    % ------------------------------------------------------------------------------------------
+    % ---------------------------------------------------------------------------------------
     %    |           | : (0,+2)   |               | :(+1,+1)             |      |: (+1,-1)
     %    |           |            |_ : (-1,-1)    |_           (-1,+1): _|     _|
     %    | :(0,-2)   |                                                                 
-    % ------------------------------------------------------------------------------------------
+    % ---------------------------------------------------------------------------------------
+    % the movement direction of the truncated segments
+    directionFlag = (contourIndex(1,:)-contourIndex(2,:)) + ...
+                    (contourIndex(2,:)-contourIndex(3,:));
+          
     for in=1:size(normalizedTruncatedInd,1)
         normalizedMatrixBuffer(normalizedTruncatedInd(in,1), normalizedTruncatedInd(in,2))=1;
     end
@@ -33,6 +37,7 @@ for indexTrace =1:2:size(contourF4,1)
     for indDictSearch = 1:5
         vertexDictionary = dictionarySymbol(indDictSearch);
         if(sum(sum((vertexDictionary.template.*normalizedMatrixBuffer)) == neighbourDepth ))
+            % direction is another parameter of the symbol determination 
             previousClass = vertexDictionary.class;
             dictFlag = indDictSearch;
         end
