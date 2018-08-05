@@ -5,11 +5,12 @@
 % there is a algebraic relationship between the vertex number and scanning
 % path through the contour of the shape
 
-%% new approach: 3x3 window swapping
+%% new approach: 3 elements swapping
 % initialization
-directionFlag = [0 0];
+directionFlag = [0 0;0 0];
 flag = 1;
 traceScalar = 2;
+secondDiff = 2;
 neighbourDepth = 3;
 scanningWindow = ones(neighbourDepth,neighbourDepth);
 % imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both'); % one pixel padding
@@ -27,9 +28,14 @@ for indexTrace =1:2:size(contourF4,1)
     %    | :(0,-2)   |                                                                 
     % ---------------------------------------------------------------------------------------
     % the movement direction of the truncated segments
-    directionFlag = (contourIndex(1,:)-contourIndex(2,:)) + ...
-                    (contourIndex(2,:)-contourIndex(3,:));
-          
+    % obtain shape of the concecutive pixels and direction flooding
+    for indexDirectionFlag=1:secondDiff
+        directionFlag(indexDirectionFlag,:) = [(contourIndex(2,indexDirectionFlag) - contourIndex(1,indexDirectionFlag))...
+                                               (contourIndex(3,indexDirectionFlag) - contourIndex(2,indexDirectionFlag))];          
+    end
+                
+ 
+           
     for in=1:size(normalizedTruncatedInd,1)
         normalizedMatrixBuffer(normalizedTruncatedInd(in,1), normalizedTruncatedInd(in,2))=1;
     end
