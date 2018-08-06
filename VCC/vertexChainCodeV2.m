@@ -57,17 +57,19 @@ for indexTrace =1:2:size(contourF4,1)
     end
     
     for indDictSearch = 1:5
-        
       vertexDictionary = dictionarySymbol(indDictSearch, directionFlag);
       if(sum(sum((vertexDictionary.template.* C_Pattern)) == neighbourDepth ))
           % direction is another parameter of the symbol determination 
-          previousClass = vertexDictionary.class;
+          C_Class = vertexDictionary.class;
           dictFlag = indDictSearch;
       end
       break;
     end
     
-   if (P_Pattern == 1 || C_Pattern == vertexDictionary().template)
+   if (P_Pattern == 1 || C_Pattern == vertexDictionary.template) % esitlikler daha kisa ve toplu yazilabilir, 
+       % onceki sonraki ve simdiki arasinda, in the case of equality, bir
+       % baglilasim var mi?
+   
    end
    
                 
@@ -80,6 +82,8 @@ for indexTrace =1:2:size(contourF4,1)
     structResult = dictionarySymbol(dictFlag);
     vertexResult = structResult.symbol;
     vertexVector = cat(2,vertexVector, vertexResult );
+    
+    P_Pattern = C_Pattern;
 end
 
 
