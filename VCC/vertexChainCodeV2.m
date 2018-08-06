@@ -7,20 +7,45 @@
 
 %% new approach: 3 elements swapping
 % initialization
-directionFlag = [0 0;0 0];
+
 flag = 1;
 traceScalar = 2;
 secondDiff = 2;
 neighbourDepth = 3;
 scanningWindow = ones(neighbourDepth,neighbourDepth);
-% imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both'); % one pixel padding
 vertexVector = zeros(size(contourF4,1)+neighbourDepth ,1);
 previousClass = 0; % initialiaze class value
 
+directionFlag = [0 0;0 0];
+P_Pattern = 1;    % PREVIOUS pattern
+C_Pattern =  zeros(neighbourDepth,neighbourDepth);    %#ok<PREALL> CURRENT pattern
+N_Pattern =  zeros(neighbourDepth,neighbourDepth);  % NEXT pattern
+C_Pattern = zeros(neighbourDepth,neighbourDepth);
+
+
 for indexTrace =1:2:size(contourF4,1)
-    contourIndex = contourF4(indexTrace:indexTrace+2,:);
-    normalizedMatrixBuffer = zeros(neighbourDepth,neighbourDepth);
-    normalizedTruncatedInd = contourIndex - (min(contourIndex)-1);
+    
+    C_contourIndex = contourF4(indexTrace:indexTrace+2,:); % CURRENT counter index array
+    C_normalizedTruncatedInd = C_contourIndex - (min(C_contourIndex)-1);
+    
+    % Determine current pattern
+    for in=1:size(C_contourIndex,1)
+       C_Pattern(C_normalizedTruncatedInd(in,1), C_normalizedTruncatedInd(in,2))=1;
+    end
+    
+    % Determine next pattern
+    N_contourIndex = contourF4(indexTrace+2:indexTrace+4,:);
+    N_normalizedTruncatedInd = N_contourIndex - (min(N_contourIndex)-1);
+    for in=1:size(N_contourIndex,1)
+       N_Pattern(N_normalizedTruncatedInd(in,1), N_normalizedTruncatedInd(in,2))=1; 
+    end
+    
+    %  Determine directionFlag
+    for indexDirectionFlag=1:secondDiff
+        directionFlag(indexDirectionFlag,:) = [(C_contourIndex(2,indexDirectionFlag) - C_contourIndex(1,indexDirectionFlag))...
+                                               (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))]; 
+    end
+    
     % determine the direction of the truncated piece
     % ---------------------------------------------------------------------------------------
     %    |           | : (0,+2)   |               | :(+1,+1)             |      |: (+1,-1)
@@ -30,25 +55,29 @@ for indexTrace =1:2:size(contourF4,1)
     % the movement direction of the truncated segments
     % obtain shape of the concecutive pixels and direction flooding
     for indexDirectionFlag=1:secondDiff
-        directionFlag(indexDirectionFlag,:) = [(contourIndex(2,indexDirectionFlag) - contourIndex(1,indexDirectionFlag))...
-                                               (contourIndex(3,indexDirectionFlag) - contourIndex(2,indexDirectionFlag))];          
-    end
-                
- 
-           
-    for in=1:size(normalizedTruncatedInd,1)
-        normalizedMatrixBuffer(normalizedTruncatedInd(in,1), normalizedTruncatedInd(in,2))=1;
+        directionFlag(indexDirectionFlag,:) = [(C_contourIndex(2,indexDirectionFlag) - C_contourIndex(1,indexDirectionFlag))...
+                                               (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))];          
     end
     
     for indDictSearch = 1:5
-        vertexDictionary = dictionarySymbol(indDictSearch);
-        if(sum(sum((vertexDictionary.template.*normalizedMatrixBuffer)) == neighbourDepth ))
-            % direction is another parameter of the symbol determination 
-            previousClass = vertexDictionary.class;
-            dictFlag = indDictSearch;
-        end
-        break;
+      vertexDictionary = dictionarySymbol(indDictSearch);
+      if(sum(sum((vertexDictionary.template.* C_Pattern)) == neighbourDepth ))
+          % direction is another parameter of the symbol determination 
+          previousClass = vertexDictionary.class;
+          dictFlag = indDictSearch;
+      end
+      break;
     end
+    
+   if (P_Pattern == 1 || C_Pattern == vertexDictionary().template)
+   end
+   
+                
+ 
+           
+   
+    
+  
     
     structResult = dictionarySymbol(dictFlag);
     vertexResult = structResult.symbol;
