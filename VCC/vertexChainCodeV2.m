@@ -16,19 +16,16 @@ scanningWindow = ones(neighbourDepth,neighbourDepth);
 vertexVector = zeros(size(contourF4,1)+neighbourDepth ,1);
 previousClass = 0; % initialiaze class value
 
-directionFlag = [0 0;0 0];
-P_Pattern = 1;    % PREVIOUS pattern
-C_Pattern =  zeros(neighbourDepth,neighbourDepth);    %#ok<PREALL> CURRENT pattern
-N_Pattern =  zeros(neighbourDepth,neighbourDepth);  % NEXT pattern
-C_Pattern = zeros(neighbourDepth,neighbourDepth);
-
+directionFlag = zeros(2,2);
+P_Pattern = ones(neighbourDepth, neighbourDepth);    % PREVIOUS pattern
+C_Pattern = zeros(neighbourDepth,neighbourDepth);  % CURRENT pattern
+N_Pattern = zeros(neighbourDepth,neighbourDepth);  % NEXT pattern initialization
 
 for indexTrace =1:2:size(contourF4,1)
     
+    % Determine current pattern
     C_contourIndex = contourF4(indexTrace:indexTrace+2,:); % CURRENT counter index array
     C_normalizedTruncatedInd = C_contourIndex - (min(C_contourIndex)-1);
-    
-    % Determine current pattern
     for in=1:size(C_contourIndex,1)
        C_Pattern(C_normalizedTruncatedInd(in,1), C_normalizedTruncatedInd(in,2))=1;
     end
@@ -52,15 +49,16 @@ for indexTrace =1:2:size(contourF4,1)
     %    |           |            |_ : (-1,-1)    |_           (-1,+1): _|     _|
     %    | :(0,-2)   |                                                                 
     % ---------------------------------------------------------------------------------------
-    % the movement direction of the truncated segments
-    % obtain shape of the concecutive pixels and direction flooding
+    % the movement direction of the truncated segments. Obtain shape of the concecutive pixels and direction flooding
+    
     for indexDirectionFlag=1:secondDiff
         directionFlag(indexDirectionFlag,:) = [(C_contourIndex(2,indexDirectionFlag) - C_contourIndex(1,indexDirectionFlag))...
                                                (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))];          
     end
     
     for indDictSearch = 1:5
-      vertexDictionary = dictionarySymbol(indDictSearch);
+        
+      vertexDictionary = dictionarySymbol(indDictSearch, directionFlag);
       if(sum(sum((vertexDictionary.template.* C_Pattern)) == neighbourDepth ))
           % direction is another parameter of the symbol determination 
           previousClass = vertexDictionary.class;
