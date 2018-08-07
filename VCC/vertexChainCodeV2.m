@@ -37,12 +37,6 @@ for indexTrace =1:2:size(contourF4,1)
        N_Pattern(N_normalizedTruncatedInd(in,1), N_normalizedTruncatedInd(in,2))=1; 
     end
     
-    %  Determine directionFlag
-    for indexDirectionFlag=1:secondDiff
-        directionFlag(indexDirectionFlag,:) = [(C_contourIndex(2,indexDirectionFlag) - C_contourIndex(1,indexDirectionFlag))...
-                                               (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))]; 
-    end
-    
     % determine the direction of the truncated piece
     % ---------------------------------------------------------------------------------------
     %    |           | : (0,+2)   |               | :(+1,+1)             |      |: (+1,-1)
@@ -56,11 +50,21 @@ for indexTrace =1:2:size(contourF4,1)
                                                (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))];          
     end
     
-    for indDictSearch = 1:5
-      vertexDictionary = dictionarySymbol(indDictSearch, directionFlag);
-      if(sum(sum((vertexDictionary.template.* C_Pattern)) == neighbourDepth ))
+    for indDictSearch = 1:6
+      C_vertexDictionary = dictionarySymbol(indDictSearch, directionFlag);
+      if(sum(sum((C_vertexDictionary.template.* C_Pattern)) == neighbourDepth ))
           % direction is another parameter of the symbol determination 
-          C_Class = vertexDictionary.class;
+          C_Class = C_vertexDictionary.class;
+          dictFlag = indDictSearch;
+      end
+      break;
+    end
+    
+    for indDictSearch = 1:6
+      N_vertexDictionary = dictionarySymbol(indDictSearch, directionFlag);
+      if(sum(sum((N_vertexDictionary.template.* N_Pattern)) == neighbourDepth ))
+          % direction is another parameter of the symbol determination 
+          C_Class = N_vertexDictionary.class;
           dictFlag = indDictSearch;
       end
       break;
