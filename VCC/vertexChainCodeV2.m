@@ -71,12 +71,23 @@ for indexTrace=1:2:size(contour,1)
       end
     end
     
-     if ( sum(sum(C_Pattern-N_Pattern))==0 && (sum(sum(C_vertexDictionary.template-[0 1 0; 1 1 0; 0 0 0]))) == 0 ) % add direction flag !!
+    pattern1 = patternDictionary(1);
+    pattern2 = patternDictionary(2);
+    pattern3 = patternDictionary(3);
+    pattern4 = patternDictionary(4);
+    pattern5 = patternDictionary(5);
+    pattern6 = patternDictionary(6);
+    
+    
+     if ( sum(sum(C_Pattern-N_Pattern))==0 && (sum(sum(C_vertexDictionary.template-pattern6.template))) == 0 ) % add direction flag !!
          if(P_Pattern == 1)
              vertexVector = cat(2,vertexVector, [1 3 1]);
          elseif (sum(sum(C_Pattern-P_Pattern))==0)
               vertexVector = cat(2,vertexVector, [1 3]);
          end
+         
+     elseif ( (sum(sum(C_vertexDictionary.template-pattern6.template))) == 0 && ... 
+              (sum(sum(N_Pattern-[0 1 0; 1 1 0; 0 0 0]))) == 0)
       
      end
    
