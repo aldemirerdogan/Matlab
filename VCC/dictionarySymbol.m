@@ -1,6 +1,6 @@
 function [C_class] = dictionarySymbol(index, directionFlag)
-    % Define vertex dictionary elements as structural data type
-    
+    %% Define vertex dictionary elements as structural data type
+    scalarFlag = 4;
     % direction flags
     DIRECTION(:,:,1,1)=[ 1  1;
                          0  0]; % 1-a
@@ -29,7 +29,7 @@ function [C_class] = dictionarySymbol(index, directionFlag)
 
     
     dictionary(1).class = 'a';
-    if (directionFlag == DIRECTION(:,:,1,1) || directionFlag == DIRECTION(:,:,1,2) ) 
+    if (sum(sum(directionFlag == DIRECTION(:,:,1,1)))==scalarFlag || sum(sum(directionFlag == DIRECTION(:,:,1,2)))==scalarFlag) 
         dictionary(1).direction= directionFlag;        
     end
     dictionary(1).template = [ 1 0 0; 
@@ -37,7 +37,7 @@ function [C_class] = dictionarySymbol(index, directionFlag)
                                1 0 0];
                            
     dictionary(2).class = 'b';
-    if (directionFlag == DIRECTION(:,:,2,1) || directionFlag == DIRECTION(:,:,2,2) ) 
+    if (sum(sum(directionFlag == DIRECTION(:,:,2,1)))==scalarFlag || sum(sum(directionFlag == DIRECTION(:,:,2,2)))==scalarFlag) 
         dictionary(2).direction= directionFlag;        
     end
     dictionary(2).template =[1 1 1;
@@ -45,7 +45,7 @@ function [C_class] = dictionarySymbol(index, directionFlag)
                              0 0 0];
                          
     dictionary(3).class = 'c';
-    if (directionFlag == DIRECTION(:,:,3,1) || directionFlag == DIRECTION(:,:,3,2) ) 
+    if (sum(sum(directionFlag == DIRECTION(:,:,3,1)))==scalarFlag || sum(sum(directionFlag == DIRECTION(:,:,3,2)))==scalarFlag) 
         dictionary(3).direction= directionFlag;        
     end
     dictionary(3).template =[1 0 0;
@@ -53,7 +53,7 @@ function [C_class] = dictionarySymbol(index, directionFlag)
                              0 0 0];
                          
     dictionary(4).class = 'd';
-    if (directionFlag == DIRECTION(:,:,4,1) || directionFlag == DIRECTION(:,:,4,2) ) 
+    if (sum(sum(directionFlag == DIRECTION(:,:,4,1)))==scalarFlag || sum(sum(directionFlag == DIRECTION(:,:,4,2)))==scalarFlag) 
         dictionary(4).direction= directionFlag;        
     end
     dictionary(4).template =[1 1 0;
@@ -61,7 +61,7 @@ function [C_class] = dictionarySymbol(index, directionFlag)
                              0 0 0];
                          
     dictionary(5).class = 'e';
-    if (directionFlag == DIRECTION(:,:,5,1) || directionFlag == DIRECTION(:,:,5,2) ) 
+    if (sum(sum(directionFlag == DIRECTION(:,:,5,1)))==scalarFlag || sum(sum(directionFlag == DIRECTION(:,:,5,2)))==scalarFlag) 
         dictionary(5).direction= directionFlag;        
     end
     dictionary(5).template =[1 1 0;
@@ -69,7 +69,7 @@ function [C_class] = dictionarySymbol(index, directionFlag)
                              0 0 0];
                          
     dictionary(6).class = 'f';
-    if (directionFlag == DIRECTION(:,:,6,1) || directionFlag == DIRECTION(:,:,6,2) ) 
+    if (sum(sum(directionFlag == DIRECTION(:,:,6,1)))==scalarFlag || sum(sum(directionFlag == DIRECTION(:,:,6,2)))==scalarFlag) 
         dictionary(6).direction= directionFlag;        
     end
     dictionary(6).template =[0 1 0;

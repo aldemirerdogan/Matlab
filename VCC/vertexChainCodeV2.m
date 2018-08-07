@@ -14,16 +14,16 @@ traceScalar = 2;
 secondDiff = 2;
 neighbourDepth = 3;
 scanningWindow = ones(neighbourDepth,neighbourDepth);
-vertexVector = zeros(size(contour,1)+neighbourDepth ,1);
+vertexVector = []; % zeros(size(contour,1)+neighbourDepth ,1);
 previousClass = 0; % initialiaze class value
 
 directionFlag = zeros(2,2);
-P_Pattern = ones(neighbourDepth, neighbourDepth);  %#ok<PREALL> PREVIOUS pattern
+P_Pattern = ones(neighbourDepth, neighbourDepth);  % PREVIOUS pattern
 C_Pattern = zeros(neighbourDepth,neighbourDepth);  % CURRENT pattern
 N_Pattern = zeros(neighbourDepth,neighbourDepth);  % NEXT pattern initialization
 
-for indexTrace =1:2:size(contour,1)
-    
+%%
+for indexTrace=1:2:size(contour,1)
     % Determine current pattern
     C_contourIndex = contour(indexTrace:indexTrace+2,:); % CURRENT counter index array
     C_normalizedTruncatedInd = C_contourIndex - (min(C_contourIndex)-1);
@@ -31,7 +31,7 @@ for indexTrace =1:2:size(contour,1)
        C_Pattern(C_normalizedTruncatedInd(in,1), C_normalizedTruncatedInd(in,2))=1;
     end
     
-    % Determine next pattern
+     % Determine next pattern
     N_contourIndex = contour(indexTrace+2:indexTrace+4,:);
     N_normalizedTruncatedInd = N_contourIndex - (min(N_contourIndex)-1);
     for in=1:size(N_contourIndex,1)
@@ -53,44 +53,42 @@ for indexTrace =1:2:size(contour,1)
     
     for indDictSearch = 1:6
       C_vertexDictionary = dictionarySymbol(indDictSearch, directionFlag);
-      if(sum(sum((C_vertexDictionary.template.* C_Pattern)) == neighbourDepth ))
+      if(sum(sum((C_vertexDictionary.template.*C_Pattern)) == neighbourDepth ))
           % direction is another parameter of the symbol determination 
           C_Class = C_vertexDictionary.class;
           dictFlag = indDictSearch;
+          break;
       end
-      break;
     end
     
     for indDictSearch = 1:6
       N_vertexDictionary = dictionarySymbol(indDictSearch, directionFlag);
       if(sum(sum((N_vertexDictionary.template.* N_Pattern)) == neighbourDepth ))
           % direction is another parameter of the symbol determination 
-          C_Class = N_vertexDictionary.class;
+          N_Class = N_vertexDictionary.class;
           dictFlag = indDictSearch;
+          break;
       end
-      break;
     end
     
-   if (P_Pattern == 1 || vertexDictionary.template == ) % esitlikler daha kisa ve toplu yazilabilir, 
-       % onceki sonraki ve simdiki arasinda, in the case of equality, bir
-       % baglilasim var mi?
+     if ( sum(sum(C_Pattern-N_Pattern))==0 && (sum(sum(C_vertexDictionary.template-[0 1 0; 1 1 0; 0 0 0]))) == 0 ) % add direction flag !!
+         if(P_Pattern == 1)
+             vertexVector = cat(2,vertexVector, [1 3 1]);
+         elseif (sum(sum(C_Pattern-P_Pattern))==0)
+              vertexVector = cat(2,vertexVector, [1 3]);
+         end
+      
+     end
    
-   end
-   
-                
- 
-           
-   
-    
-  
-    
+         
     structResult = dictionarySymbol(dictFlag);
     vertexResult = structResult.symbol;
     vertexVector = cat(2,vertexVector, vertexResult );
     
     P_Pattern = C_Pattern;
-end
 
+    
+end
 
 
 
