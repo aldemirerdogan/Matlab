@@ -6,32 +6,33 @@
 % path through the contour of the shape
 
 %% new approach: 3 elements swapping
-% initialization
+[imageCounter, contour ] = contour_image(imageTest,4);
 
+% initialization
 flag = 1;
 traceScalar = 2;
 secondDiff = 2;
 neighbourDepth = 3;
 scanningWindow = ones(neighbourDepth,neighbourDepth);
-vertexVector = zeros(size(contourF4,1)+neighbourDepth ,1);
+vertexVector = zeros(size(contour,1)+neighbourDepth ,1);
 previousClass = 0; % initialiaze class value
 
 directionFlag = zeros(2,2);
-P_Pattern = ones(neighbourDepth, neighbourDepth);    % PREVIOUS pattern
+P_Pattern = ones(neighbourDepth, neighbourDepth);  %#ok<PREALL> PREVIOUS pattern
 C_Pattern = zeros(neighbourDepth,neighbourDepth);  % CURRENT pattern
 N_Pattern = zeros(neighbourDepth,neighbourDepth);  % NEXT pattern initialization
 
-for indexTrace =1:2:size(contourF4,1)
+for indexTrace =1:2:size(contour,1)
     
     % Determine current pattern
-    C_contourIndex = contourF4(indexTrace:indexTrace+2,:); % CURRENT counter index array
+    C_contourIndex = contour(indexTrace:indexTrace+2,:); % CURRENT counter index array
     C_normalizedTruncatedInd = C_contourIndex - (min(C_contourIndex)-1);
     for in=1:size(C_contourIndex,1)
        C_Pattern(C_normalizedTruncatedInd(in,1), C_normalizedTruncatedInd(in,2))=1;
     end
     
     % Determine next pattern
-    N_contourIndex = contourF4(indexTrace+2:indexTrace+4,:);
+    N_contourIndex = contour(indexTrace+2:indexTrace+4,:);
     N_normalizedTruncatedInd = N_contourIndex - (min(N_contourIndex)-1);
     for in=1:size(N_contourIndex,1)
        N_Pattern(N_normalizedTruncatedInd(in,1), N_normalizedTruncatedInd(in,2))=1; 
@@ -70,7 +71,7 @@ for indexTrace =1:2:size(contourF4,1)
       break;
     end
     
-   if (P_Pattern == 1 || C_Pattern == vertexDictionary.template) % esitlikler daha kisa ve toplu yazilabilir, 
+   if (P_Pattern == 1 || vertexDictionary.template == ) % esitlikler daha kisa ve toplu yazilabilir, 
        % onceki sonraki ve simdiki arasinda, in the case of equality, bir
        % baglilasim var mi?
    
