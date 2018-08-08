@@ -73,23 +73,37 @@ for indexTrace=1:2:size(contour,1)
        
     pattern = patternDictionary;
     
-     if ( sum(sum(C_Pattern-N_Pattern))==0 && (sum(sum(C_vertexDictionary.template - pattern(6).template))) == 0 && D ) % add direction flag !!
-         if(P_Pattern == 1)
-             if(directionFlag == pattern(6).direction(:,:,1))
-                vertexVecBuffer = [1 3 1];
-             else
-                vertexVecBuffer = '?';
-             end
-             vertexVector = cat(2,vertexVector, y);
-         elseif (sum(sum(C_Pattern-P_Pattern))==0)
-              vertexVector = cat(2,vertexVector, [1 3]);
+    if (sum(sum(C_Pattern-N_Pattern))==0 && (sum(sum(C_vertexDictionary.template - pattern(6).template)))==0) 
+        if(P_Pattern == 1)
+            if(directionFlag == pattern(6).direction(:,:,1))
+               vertexVecBuffer = [1 3 1];
+            else
+               vertexVecBuffer = [1 2 1 3];
+            end
+            vertexVector = cat(2,vertexVector, vertexVecBuffer);
+        elseif (sum(sum(C_Pattern-P_Pattern))==0)
+              vertexVector = cat(2,vertexVector, [3 1 ]);
+        elseif (P_Pattern == pattern(5).template )
+            vertexVector = cat(2,vertexVector, [2 3 1 ]);
+        elseif (P_Pattern == pattern(4).template )
+            % vertexVector = cat(2,vertexVector, [3 1 ]);
+        elseif (P_Pattern == pattern(3).template )
+            vertexVector = cat(2,vertexVector, [1 1 3 ]);
+        elseif (P_Pattern == pattern(2).template )
+            vertexVector = cat(2,vertexVector, [2 1 3 ]);
+        elseif (P_Pattern == pattern(1).template )
+            vertexVector = cat(2,vertexVector, [3 1 ]);
         end
          
+        
+        
+        
+        
         elseif ( (sum(sum(C_vertexDictionary.template-pattern(6).template))) == 0 && ... 
               (sum(sum(N_Pattern-[0 1 0; 1 1 0; 0 0 0]))) == 0)
           
       
-     end
+    end
    
          
     structResult = dictionarySymbol(dictFlag);
