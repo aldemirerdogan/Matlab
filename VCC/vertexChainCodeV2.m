@@ -1,13 +1,5 @@
-%% Vertex code for 2D images
-% load imageTest
-% x --> {x, x+1, x-1} --> {x, x+1, x-1, x-2, x+2 }
-% x --> {y, y+1, y-1} --> {y, y+1, y-1, y-2, y+2 }
-% there is a algebraic relationship between the vertex number and scanning
-% path through the contour of the shape
-
-%% new approach: 3 elements swapping
+%% Vertex code for 2D images %% new approach: 3 elements swapping
 [imageCounter, contour ] = contour_image(imageTest,4);
-
 % initialization
 flag = 1;
 traceScalar = 2;
@@ -37,7 +29,6 @@ for indexTrace=1:2:size(contour,1)
     for in=1:size(N_contourIndex,1)
        N_Pattern(N_normalizedTruncatedInd(in,1), N_normalizedTruncatedInd(in,2))=1; 
     end
-    
     % determine the direction of the truncated piece
     % ---------------------------------------------------------------------------------------
     %    |           | : (0,+2)   |               | :(+1,+1)             |      |: (+1,-1)
@@ -45,7 +36,6 @@ for indexTrace=1:2:size(contour,1)
     %    | :(0,-2)   |                                                                 
     % ---------------------------------------------------------------------------------------
     % the movement direction of the truncated segments. Obtain shape of the concecutive pixels and direction flooding
-    
     for indexDirectionFlag=1:secondDiff
         directionFlag(indexDirectionFlag,:) = [(C_contourIndex(2,indexDirectionFlag) - C_contourIndex(1,indexDirectionFlag))...
                                                (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))];          
@@ -72,8 +62,20 @@ for indexTrace=1:2:size(contour,1)
     end
        
     pattern = patternDictionary;
+   
     
-    if (sum(sum(C_Pattern-N_Pattern))==0 && (sum(sum(C_vertexDictionary.template - pattern(6).template)))==0) 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    if ((sum(sum(C_vertexDictionary.template - pattern(6).template)))==0 && sum(sum(C_Pattern-N_Pattern))==0) 
         if(P_Pattern == 1)
             if(directionFlag == pattern(6).direction(:,:,1))
                vertexVecBuffer = [1 3 1];
@@ -94,16 +96,37 @@ for indexTrace=1:2:size(contour,1)
         elseif (P_Pattern == pattern(1).template )
             vertexVector = cat(2,vertexVector, [3 1 ]);
         end
-         
-        
-        
-        
         
         elseif ( (sum(sum(C_vertexDictionary.template-pattern(6).template))) == 0 && ... 
               (sum(sum(N_Pattern-[0 1 0; 1 1 0; 0 0 0]))) == 0)
-          
-      
+               
     end
+   
+    if ((sum(sum(C_vertexDictionary.template - pattern(5).template)))==0 && sum(sum(C_Pattern-N_Pattern))==0) 
+        
+    end
+        
+    if ((sum(sum(C_vertexDictionary.template - pattern(4).template)))==0 && sum(sum(C_Pattern-N_Pattern))==0) 
+        
+    end
+        
+    if ((sum(sum(C_vertexDictionary.template - pattern(3).template)))==0 && sum(sum(C_Pattern-N_Pattern))==0) 
+        
+    end
+        
+    if ((sum(sum(C_vertexDictionary.template - pattern(2).template)))==0 && sum(sum(C_Pattern-N_Pattern))==0) 
+        
+    end   
+    
+    
+    if ((sum(sum(C_vertexDictionary.template - pattern(1).template)))==0 && sum(sum(C_Pattern-N_Pattern))==0) 
+        
+    end
+       
+    
+   
+    
+    
    
          
     structResult = dictionarySymbol(dictFlag);
