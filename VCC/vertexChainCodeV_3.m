@@ -37,10 +37,20 @@ for i = 2 : m - 1
     end
 end
 
+secondDiff = 2;
 vertexVector = [];
-
+patternDictionary = pattern_dictionary();
 for index = 1: size(contour,1)
     fieldValue = vals(contour(index,1),contour(index,2));
-    vertexVector = cat(2,vertexVector,fieldValue.kd);
     
+    directionFlag = zeros(2,2);
+    C_contourIndex = contour(index:index+secondDiff,:);
+    for indexDirectionFlag=1:secondDiff
+        directionFlag(indexDirectionFlag,:) = [(C_contourIndex(2,indexDirectionFlag) - C_contourIndex(1,indexDirectionFlag))...
+                                               (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))];          
+    end
+        
+    if (directionFlag == patternDictionary.direction)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    end
 end
