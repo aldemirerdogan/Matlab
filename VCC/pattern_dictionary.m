@@ -1,4 +1,4 @@
-function [pattern] = patternDictionary(~)
+function [pattern] = pattern_dictionary(~)
     % 1st pattern and direction
     dictionary(1).class = 'a';
     dictionary(1).template = [ 1 0 0; 
