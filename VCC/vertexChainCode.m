@@ -4,12 +4,16 @@
 % x --> {y, y+1, y-1} --> {y, y+1, y-1, y-2, y+2 }
 % there is a algebraic relationship between the vertex number and scanning
 % path through the contour of the shape
-%%
+%% image acquisition
+
 imageTest = imread('rectangular_36x36.png');
 imageTest = imageTest (:,:,1);
 imageTest = logical(imageTest);
 imshow(imageTest);
-%%
+
+%% Contour extracting
+
+
 % Index of the first noZero pixel
 [r,c] = nonZeroIndex(imageTest);
 contourF4 = bwtraceboundary(imageTest,[r c],'W',4,Inf,'counterclockwise'); % 4 connectivity index of the contour
@@ -24,14 +28,40 @@ end
 
 hold on; plot(contourF4(:,2),contourF4(:,1),'g','LineWidth',2);
 
+%% new approach: 3x3 window swapping
+% initialization
+directionFlag = [0;0;0;0];
+vertexVector(1) = 1;
+flag = 1;
+traceScalar = 2;
+neighbourDepth = 3;
+scanningWindow = ones(neighbourDepth,neighbourDepth);
+imageF4ContourPadded = padarray(imageF4Contour,[1 1],0,'both'); % one pixel padding
+vertexVector = zeros(size(contourF4,1)+neighbourDepth ,1);
+VertexDictionary = [];
 
-vertex = 1;
-directionFlag = [ 0;0;0;0 ];
+
+for indexTrace =1:size(contourF4,1)
+    contourIndex = contourF4(indexTrace,1);
+    
+    truncatedRegionBuffer = imageF4ContourPadded(contourIndex(1,1):contourIndex(1,1)+indexTruncate,...
+                                                 contourIndex(1,2):contourIndex(1,2)+indexTruncate);
+ 
+    for indexNeigbour = 1:neigbourDepth
+        imageF4Contour(contourF4(indexTrace+index-1,1),contourF4(indexTrace+index-1,2))= traceScalar;
+    end
+    flag =flag+1;
+
+end
+
+
+%% Differential vector generation
 
 % find one-pixel depth differential vector of the contours
 differentialVector = zeros(size(contourF4,1),2);
 differential2ndVector = zeros(size(contourF4,1),2);
 differential3thVector = zeros(size(contourF4,1),2);
+
 
 for indexDiff = 1:size(contourF4,1)
     differentialVector(indexDiff,:) = contourF4(indexDiff+1,:) - ...
@@ -59,6 +89,8 @@ for index3thDiff = 1:size(differential2ndVector,1)
     end
 end
 %%
+% initialiaze vertex vector
+
 for indexX = 1:2
         
         contourIndex = contourF4(indexY,:) ;
