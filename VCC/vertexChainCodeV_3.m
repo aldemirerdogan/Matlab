@@ -54,18 +54,22 @@ for index = 1: size(contour,1)
     end
 
     if (mod(index,3)== 0)
-        indexFlag = indexFlag + 1 ;
+        indexFlag = indexFlag + 1;
+        localCounter =1;
     end
     
     if (sum(sum(directionFlag - patternDictionary(1).direction(:,:,1)))== 0)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
-        
         % donemecin ilkinde 2'li sonrakilerinde tekerli olacak...
     elseif (sum(sum(directionFlag - patternDictionary(1).direction(:,:,2)))== 0)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
     
     elseif (sum(sum(directionFlag - patternDictionary(2).direction(:,:,1)))== 0)
+        if (localCounter == 1)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
+        end
+        localCounter = 0;
+        vertexVector = cat(2,vertexVector,fieldValue.gd);
     elseif (sum(sum(directionFlag - patternDictionary(2).direction(:,:,2)))== 0)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
         
@@ -80,7 +84,11 @@ for index = 1: size(contour,1)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
 
     elseif (sum(sum(directionFlag - patternDictionary(5).direction(:,:,2)))== 0)
-        vertexVector = cat(2,vertexVector,fieldValue.kd);
+       if (localCounter == 1)
+        vertexVector = cat(2,vertexVector,fieldValue.gd);
+        end
+        localCounter = 0;
+        vertexVector = cat(2,vertexVector,fieldValue.gb);
     elseif (sum(sum(directionFlag - patternDictionary(5).direction(:,:,1)))== 0)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
         
