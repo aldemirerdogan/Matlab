@@ -1,4 +1,4 @@
-
+%% 
 % Construc a test image
 imagetest = [0 0 0 0 0 0;
              0 1 1 1 1 0;
@@ -9,7 +9,7 @@ imagetest = [0 0 0 0 0 0;
 imagetest = logical(imagetest);
 [imageCounter, contour ] = contour_image(imagetest,4);         
 [m, n] = size(imagetest);
-     
+ %%   
 % Initialize the struct array
 vals = ([]);
 for i  = 1 : m
@@ -50,7 +50,35 @@ for index = 1: size(contour,1)
                                                (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))];          
     end
         
-    if (directionFlag == patternDictionary.direction)
+    if (sum(sum(directionFlag - patternDictionary(1).direction(:,:,1)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    elseif (sum(sum(directionFlag - patternDictionary(1).direction(:,:,2)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    
+    elseif (sum(sum(directionFlag - patternDictionary(2).direction(:,:,1)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    elseif (sum(sum(directionFlag - patternDictionary(2).direction(:,:,2)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+        
+    elseif (sum(sum(directionFlag - patternDictionary(3).direction(:,:,2)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    elseif (sum(sum(directionFlag - patternDictionary(3).direction(:,:,1)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+   
+    elseif (sum(sum(directionFlag - patternDictionary(4).direction(:,:,2)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    elseif (sum(sum(directionFlag - patternDictionary(4).direction(:,:,1)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+
+    elseif (sum(sum(directionFlag - patternDictionary(5).direction(:,:,2)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    elseif (sum(sum(directionFlag - patternDictionary(5).direction(:,:,1)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+        
+    elseif (sum(sum(directionFlag - patternDictionary(6).direction(:,:,2)))== 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+    elseif (sum(sum(directionFlag - patternDictionary(6).direction(:,:,1)))== 0)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
     end
+    
 end
