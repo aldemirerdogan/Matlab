@@ -26,13 +26,13 @@ end
 for i = 2 : m - 1
     for j = 2 : n - 1
         vals(i, j).kd = imagetest(i - 1, j) + imagetest(i - 1, j - 1) + ...
-            imagetest(i, j - 1) + 1;
+                        imagetest(i, j - 1) + 1;
         vals(i, j).kb = imagetest(i - 1, j) + imagetest(i - 1, j + 1) + ...
-            imagetest(i, j + 1) + 1;
+                        imagetest(i, j + 1) + 1;
         vals(i, j).gb = imagetest(i, j + 1) + imagetest(i + 1, j + 1) + ...
-            imagetest(i + 1, j) + 1;
+                        imagetest(i + 1, j) + 1;
         vals(i, j).gd = imagetest(i, j - 1) + imagetest(i + 1, j - 1) + ...
-            imagetest(i + 1, j) + 1;
+                        imagetest(i + 1, j) + 1;
     end
 end
 
