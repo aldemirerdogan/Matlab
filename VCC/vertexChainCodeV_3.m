@@ -43,6 +43,7 @@ patternDictionary = pattern_dictionary();
 indexFlag = 1;
 
 for index = 1: size(contour,1)
+    
     fieldValue = vals(contour(index,1),contour(index,2));
     
     directionFlag = zeros(2,2);
@@ -53,7 +54,7 @@ for index = 1: size(contour,1)
                                                (C_contourIndex(3,indexDirectionFlag) - C_contourIndex(2,indexDirectionFlag))];          
     end
 
-    if (mod(index,3)== 0)
+    if (mod(index,2)== 0)
         indexFlag = indexFlag + 1;
         localCounter =1;
     end
