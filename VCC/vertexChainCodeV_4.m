@@ -1,11 +1,7 @@
 %% 
 % Construc a test image
-imagetest = [0 0 0 0 0 0;
-             0 1 1 1 1 0;
-             0 1 0 0 1 0;
-             0 1 0 0 1 0;
-             0 1 1 1 1 0;
-             0 0 0 0 1 0];
+clear all;         
+test_images(1);
 imagetest = logical(imagetest);
 [imageCounter, contour ] = contour_image(imagetest,4);         
 [m, n] = size(imagetest);
@@ -25,14 +21,14 @@ end
 for i = 2 : m - 1
     for j = 2 : n - 1
         if(imagetest(i,j)==1)
-            vals(i, j).kd = imagetest(i - 1, j) + imagetest(i - 1, j - 1) + ...
+            vals(i, j).kb = imagetest(i - 1, j) + imagetest(i - 1, j - 1) + ...
                             imagetest(i, j - 1) + 1;
-            vals(i, j).kb = imagetest(i - 1, j) + imagetest(i - 1, j + 1) + ...
-                            imagetest(i, j + 1) + 1;
-            vals(i, j).gb = imagetest(i, j + 1) + imagetest(i + 1, j + 1) + ...
+            vals(i, j).gb = imagetest(i + 1, j-1) + imagetest(i+1, j ) + ...
+                            imagetest(i, j - 1) + 1;
+            vals(i, j).gd = imagetest(i, j + 1) + imagetest(i + 1, j + 1) + ...
                             imagetest(i + 1, j) + 1;
-            vals(i, j).gd = imagetest(i, j - 1) + imagetest(i + 1, j - 1) + ...
-                            imagetest(i + 1, j) + 1;
+            vals(i, j).kd = imagetest(i, j + 1) + imagetest(i - 1, j + 1) + ...
+                            imagetest(i - 1, j) + 1;
         end
     end
 end
@@ -93,4 +89,45 @@ for index = 1:size(contour,1)
         vertexVector = cat(2,vertexVector,fieldValue.kd);
     end
   
+end
+
+function imageTest = test_images(imageNumber)
+    switch imageNumber
+        case 1
+        imageTest = [0 0 0 0 0 0;
+                     0 1 1 1 1 0;
+                     0 1 0 0 1 0;
+                     0 1 0 0 1 0;
+                     0 1 1 1 1 0;
+                     0 0 0 0 1 0];
+        case 2  
+        imageTest = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+                     0 0 0 0 0 0 1 1 1 0 0 0 0 0 0;
+                     0 0 0 0 0 1 1 0 1 1 0 0 0 0 0;
+                     0 0 0 0 1 1 0 0 0 1 1 0 0 0 0;
+                     0 0 0 1 1 0 0 0 0 0 1 1 0 0 0;
+                     0 0 1 1 0 0 0 0 0 0 0 1 1 0 0;
+                     0 1 1 0 0 0 0 0 0 0 0 0 1 1 0;
+                     0 1 0 0 0 0 0 0 0 0 0 0 0 1 0;
+                     0 1 1 0 0 0 0 0 0 0 0 0 1 1 0;
+                     0 0 1 1 0 0 0 0 0 0 0 1 1 0 0;
+                     0 0 0 1 1 0 0 0 0 0 1 1 0 0 0;
+                     0 0 0 0 1 1 0 0 0 1 1 0 0 0 0;
+                     0 0 0 0 0 1 1 0 1 1 0 0 0 0 0;
+                     0 0 0 0 0 0 1 1 1 0 0 0 0 0 0;
+                     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+        case 3
+        imageTest=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+                   0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0;
+                   0 1 0 0 0 0 0 0 0 0 0 1 1 0 0 0;
+                   0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0; 
+                   0 1 1 0 0 0 0 0 0 0 0 0 0 1 1 0;
+                   0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 0;
+                   0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0;
+                   0 0 0 0 1 1 0 0 0 0 0 0 1 1 0 0;
+                   0 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0;
+                   0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0;
+                   0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0;
+                   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+    end
 end
