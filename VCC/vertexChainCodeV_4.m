@@ -1,12 +1,12 @@
-%% 
-% Construc a test image
-clear all;         
-test_images(1);
+%% Construc a test image
+clear all;          %#ok<CLALL>
+imagetest= test_images(2);
 imagetest = logical(imagetest);
 [imageCounter, contour ] = contour_image(imagetest,4);         
 [m, n] = size(imagetest);
  %%   
-% Initialize the struct array
+
+ % Initialize the struct array
 vals = ([]);
 for i  = 1 : m
     for j = 1 : n
@@ -90,7 +90,8 @@ for index = 1:size(contour,1)
     end
   
 end
-
+ 
+%% test image function
 function imageTest = test_images(imageNumber)
     switch imageNumber
         case 1
