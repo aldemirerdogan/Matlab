@@ -1,6 +1,8 @@
 %% Construc a test image
-clear all;          %#ok<CLALL>
-imageTest= test_images(2);
+% clear all;          %#ok<CLALL>
+% imageTest= test_images(2);
+clear all;
+load imageTest.mat
 imageTest = logical(imageTest);
 [imageCounter, contour ] = contour_image(imageTest,4);         
 [m, n] = size(imageTest);
@@ -43,6 +45,8 @@ indexFlag = 1;
 P_pixel = 1;
 C_Pattern = zeros(neighbourDepth,neighbourDepth);  % CURRENT pattern
 pattern = patternDictionary;
+counterTotal = 0;
+directionFlagBuffer = 0;
 
 for indexOuter = 1:3:size(contour,1) % swapping all contour vector
     % determine the direction of the truncated piece
@@ -61,7 +65,7 @@ for indexOuter = 1:3:size(contour,1) % swapping all contour vector
     end
     
     directionFlag = zeros(2,2);
-    
+    flagControl = 1;
     C_contourIndex = contour(indexOuter:indexOuter+secondDiff,:);
     for indexDirectionFlag=1:secondDiff
         directionFlag(indexDirectionFlag,:) = [(C_contourIndex(2,indexDirectionFlag) - C_contourIndex(1,indexDirectionFlag))...
@@ -69,193 +73,230 @@ for indexOuter = 1:3:size(contour,1) % swapping all contour vector
     end
     
     %%*----- 1 ------*
-    if ( sum( sum( C_Pattern - pattern(1).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(1).direction(:,:,1))) == 0)
+    if ( sum( sum( abs(C_Pattern - pattern(1).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(1).direction(:,:,1)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
+            if (flagControl==1 || directionFlag )
+                % new condition geos here
+            end
             vertexVector = cat(2,vertexVector,fieldValue.kb);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            if (flagControl==1) % starting point of swapping
+                x = C_contourIndex(indexInner+1,1) ;
+                y = C_contourIndex(indexInner+1,2) ;
+                counterTotal = counterTotal + 1;
+            end
         end
-    elseif ( sum( sum( C_Pattern - pattern(1).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(1).direction(:,:,2))) == 0)
+        vertexVector = cat(2,vertexVector,fieldValue.kb);  
+        
+    elseif ( sum( sum( abs(C_Pattern - pattern(1).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(1).direction(:,:,2)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1  % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.kd);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1;
         end
+        vertexVector = cat(2,vertexVector,fieldValue.kd);  
         
     %%*----- 2 ------*        
-    elseif ( sum( sum( C_Pattern - pattern(2).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(2).direction(:,:,1))) == 0)
+    elseif ( sum( sum( abs(C_Pattern - pattern(2).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(2).direction(:,:,1)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
-            fieldValue = vals(x,y);
-            vertexVector = cat(2,vertexVector,fieldValue.gd);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
-        end
-    elseif ( sum( sum( C_Pattern - pattern(2).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(2).direction(:,:,2))) == 0)
-        x = C_contourIndex(1,1);
-        y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
-            fieldValue = vals(x,y);
-            vertexVector = cat(2,vertexVector,fieldValue.kb);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
-        end
-
-        %%*----- 3 ------*
-    elseif ( sum( sum( C_Pattern - pattern(3).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(3).direction(:,:,1))) == 0)
-        x = C_contourIndex(1,1);
-        y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.gb);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1;
         end
-    elseif ( sum( sum( C_Pattern - pattern(3).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(3).direction(:,:,2))) == 0)
+        vertexVector = cat(2,vertexVector,fieldValue.gd);  
+         
+    elseif ( sum( sum( abs(C_Pattern - pattern(2).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(2).direction(:,:,2)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
+            fieldValue = vals(x,y);
+            vertexVector = cat(2,vertexVector,fieldValue.kb);  
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1;
+        end
+        vertexVector = cat(2,vertexVector,fieldValue.kb); 
+        
+    %%*----- 3 ------*
+    elseif ( sum( sum( abs(C_Pattern - pattern(3).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(3).direction(:,:,1)))) == 0)
+        x = C_contourIndex(1,1);
+        y = C_contourIndex(1,2);
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
+            fieldValue = vals(x,y);
+            vertexVector = cat(2,vertexVector,fieldValue.gb);  
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1;
+        end
+        vertexVector = cat(2,vertexVector,fieldValue.gb);  
+        
+    elseif ( sum( sum( abs(C_Pattern - pattern(3).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(3).direction(:,:,2)))) == 0)
+        x = C_contourIndex(1,1);
+        y = C_contourIndex(1,2);
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.kd);  
             
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1 ;
         end
-           
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
+        
     %%*----- 4 ------*       
-    elseif ( sum( sum( C_Pattern - pattern(4).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(4).direction(:,:,1))) == 0)
+    elseif ( sum( sum( abs(C_Pattern - pattern(4).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(4).direction(:,:,1)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.gb);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1 ;
         end
-    elseif ( sum( sum( C_Pattern - pattern(4).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(4).direction(:,:,2))) == 0)
+        vertexVector = cat(2,vertexVector,fieldValue.gb);
+        
+    elseif ( sum( sum( abs(C_Pattern - pattern(4).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(4).direction(:,:,2)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.kd);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;    
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;  
+            counterTotal = counterTotal + 1 ;
         end
-        
+        vertexVector = cat(2,vertexVector,fieldValue.kd);
     %%*----- 5 ------*
-    elseif ( sum( sum( C_Pattern - pattern(5).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(5).direction(:,:,1))) == 0)
+    elseif ( sum( sum( abs(C_Pattern - pattern(5).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(5).direction(:,:,1)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.gd);  
-            x = C_contourIndex(indexOuter+1,1);
-            y = C_contourIndex(indexOuter+1,2);
+            x = C_contourIndex(indexInner+1,1);
+            y = C_contourIndex(indexInner+1,2);
+            counterTotal = counterTotal + 1 ;
         end
-    elseif ( sum( sum( C_Pattern - pattern(5).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(5).direction(:,:,2))) == 0)
+        vertexVector = cat(2,vertexVector,fieldValue.gd);
+        
+    elseif ( sum( sum( abs(C_Pattern - pattern(5).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(5).direction(:,:,2)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.kb);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1 ;
         end
+        vertexVector = cat(2,vertexVector,fieldValue.kb);
 
     %%*----- 6 ------*
-    elseif ( sum( sum( C_Pattern - pattern(6).template))== 0 && ...
-         sum( sum( directionFlag - patternDictionary(6).direction(:,:,1))) == 0)
+    elseif ( sum( sum( abs(C_Pattern - pattern(6).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(6).direction(:,:,1)))) == 0)
          x = C_contourIndex(1,1);
          y = C_contourIndex(1,2);
-         for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+         for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.kb);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1 ;
          end
-    elseif ( sum( sum( C_Pattern - pattern(6).template))== 0 && ...
-        sum( sum( directionFlag - patternDictionary(6).direction(:,:,2))) == 0)
+         vertexVector = cat(2,vertexVector,fieldValue.kb);
+         
+    elseif ( sum( sum( abs(C_Pattern - pattern(6).template)))== 0 && ...
+        sum( sum( abs(directionFlag - patternDictionary(6).direction(:,:,2)))) == 0)
         x = C_contourIndex(1,1);
         y = C_contourIndex(1,2);
-        for indexInner = 1:size(C_contourIndex,1) % determine (3 pixels) vertex valueshesap 
+        for indexInner = 1:size(C_contourIndex,1) - 1 % determine (3 pixels) vertex valueshesap 
             fieldValue = vals(x,y);
             vertexVector = cat(2,vertexVector,fieldValue.gd);  
-            x = C_contourIndex(indexOuter+1,1) ;
-            y = C_contourIndex(indexOuter+1,2) ;
+            x = C_contourIndex(indexInner+1,1) ;
+            y = C_contourIndex(indexInner+1,2) ;
+            counterTotal = counterTotal + 1 ;
         end
+        vertexVector = cat(2,vertexVector,fieldValue.gd);
     end
     
+    C_Pattern = zeros(neighbourDepth,neighbourDepth);
+    flagControl = flagControl + 1;
+    directionFlagBuffer =  directionFlag ;
 end % end of outer index for swapping contour vector
  
-%% test image function
-function imageTest = test_images(imageNumber)
-    switch imageNumber
-        case 1
-        imageTest = [0 0 0 0 0 0;
-                     0 1 1 1 1 0;
-                     0 1 0 0 1 0;
-                     0 1 0 0 1 0;
-                     0 1 1 1 1 0;
-                     0 0 0 0 1 0];
-        case 2  
-        imageTest = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-                     0 0 0 0 0 0 1 1 1 0 0 0 0 0 0;
-                     0 0 0 0 0 1 1 0 1 1 0 0 0 0 0;
-                     0 0 0 0 1 1 0 0 0 1 1 0 0 0 0;
-                     0 0 0 1 1 0 0 0 0 0 1 1 0 0 0;
-                     0 0 1 1 0 0 0 0 0 0 0 1 1 0 0;
-                     0 1 1 0 0 0 0 0 0 0 0 0 1 1 0;
-                     0 1 0 0 0 0 0 0 0 0 0 0 0 1 0;
-                     0 1 1 0 0 0 0 0 0 0 0 0 1 1 0;
-                     0 0 1 1 0 0 0 0 0 0 0 1 1 0 0;
-                     0 0 0 1 1 0 0 0 0 0 1 1 0 0 0;
-                     0 0 0 0 1 1 0 0 0 1 1 0 0 0 0;
-                     0 0 0 0 0 1 1 0 1 1 0 0 0 0 0;
-                     0 0 0 0 0 0 1 1 1 0 0 0 0 0 0;
-                     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
-        case 3
-        imageTest=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-                   0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0;
-                   0 1 0 0 0 0 0 0 0 0 0 1 1 0 0 0;
-                   0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0; 
-                   0 1 1 0 0 0 0 0 0 0 0 0 0 1 1 0;
-                   0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 0;
-                   0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0;
-                   0 0 0 0 1 1 0 0 0 0 0 0 1 1 0 0;
-                   0 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0;
-                   0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0;
-                   0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0;
-                   0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
-               
-        case 4
-        imageTest = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
-                     0 0 0 0 1 1 1 0 0 0 0 0 0 0 0;
-                     0 0 0 1 1 0 1 1 0 0 0 0 0 0 0;
-                     0 0 1 1 0 0 0 1 1 0 1 0 0 0 0;
-                     0 1 1 0 0 0 0 0 1 1 1 1 1 1 0;
-                     0 1 0 0 0 0 0 0 0 0 0 0 1 0 0;
-                     0 1 0 0 0 0 0 0 0 0 0 0 1 0 0;
-                     0 1 1 0 0 0 0 0 0 0 0 1 1 0 0;
-                     0 0 1 1 0 0 0 0 0 0 1 1 0 0 0;
-                     0 0 0 1 1 0 0 0 0 0 1 0 0 0 0;
-                     0 0 0 0 1 1 1 1 1 1 1 0 0 0 0;
-                     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ];
-    end
-end
+% %% test image function
+% function imageTest = test_images(imageNumber)
+%     switch imageNumber
+%         case 1
+%         imageTest = [0 0 0 0 0 0;
+%                      0 1 1 1 1 0;
+%                      0 1 0 0 1 0;
+%                      0 1 0 0 1 0;
+%                      0 1 1 1 1 0;
+%                      0 0 0 0 0 0];
+%         case 2  
+%         imageTest = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+%                      0 0 0 0 0 0 1 1 1 0 0 0 0 0 0;
+%                      0 0 0 0 0 1 1 0 1 1 0 0 0 0 0;
+%                      0 0 0 0 1 1 0 0 0 1 1 0 0 0 0;
+%                      0 0 0 1 1 0 0 0 0 0 1 1 0 0 0;
+%                      0 0 1 1 0 0 0 0 0 0 0 1 1 0 0;
+%                      0 1 1 0 0 0 0 0 0 0 0 0 1 1 0;
+%                      0 1 0 0 0 0 0 0 0 0 0 0 0 1 0;
+%                      0 1 1 0 0 0 0 0 0 0 0 0 1 1 0;
+%                      0 0 1 1 0 0 0 0 0 0 0 1 1 0 0;
+%                      0 0 0 1 1 0 0 0 0 0 1 1 0 0 0;
+%                      0 0 0 0 1 1 0 0 0 1 1 0 0 0 0;
+%                      0 0 0 0 0 1 1 0 1 1 0 0 0 0 0;
+%                      0 0 0 0 0 0 1 1 1 0 0 0 0 0 0;
+%                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+%         case 3
+%         imageTest=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+%                    0 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0;
+%                    0 1 0 0 0 0 0 0 0 0 0 1 1 0 0 0;
+%                    0 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0; 
+%                    0 1 1 0 0 0 0 0 0 0 0 0 0 1 1 0;
+%                    0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 0;
+%                    0 0 0 1 1 0 0 0 0 0 0 0 0 1 1 0;
+%                    0 0 0 0 1 1 0 0 0 0 0 0 1 1 0 0;
+%                    0 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0;
+%                    0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0;
+%                    0 0 0 0 0 0 1 1 1 1 1 1 0 0 0 0;
+%                    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+%                
+%         case 4
+%         imageTest = [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+%                      0 0 0 0 1 1 1 0 0 0 0 0 0 0 0;
+%                      0 0 0 1 1 0 1 1 0 0 0 0 0 0 0;
+%                      0 0 1 1 0 0 0 1 1 0 1 0 0 0 0;
+%                      0 1 1 0 0 0 0 0 1 1 1 1 1 1 0;
+%                      0 1 0 0 0 0 0 0 0 0 0 0 1 0 0;
+%                      0 1 0 0 0 0 0 0 0 0 0 0 1 0 0;
+%                      0 1 1 0 0 0 0 0 0 0 0 1 1 0 0;
+%                      0 0 1 1 0 0 0 0 0 0 1 1 0 0 0;
+%                      0 0 0 1 1 0 0 0 0 0 1 0 0 0 0;
+%                      0 0 0 0 1 1 1 1 1 1 1 0 0 0 0;
+%                      0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ];
+%     end
+% end
